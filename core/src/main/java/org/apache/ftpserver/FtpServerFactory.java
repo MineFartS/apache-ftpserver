@@ -31,6 +31,7 @@ import org.apache.ftpserver.impl.DefaultFtpServer;
 import org.apache.ftpserver.impl.DefaultFtpServerContext;
 import org.apache.ftpserver.listener.Listener;
 import org.apache.ftpserver.message.MessageResource;
+import org.apache.ftpserver.listener.ListenerFactory;
 
 /**
  * This is the starting point of all the servers. Creates server instances based on
@@ -42,11 +43,23 @@ public class FtpServerFactory {
 
     private DefaultFtpServerContext serverContext;
 
+    public String host;
+    public int port;
+
     /**
      * Creates a server with the default configuration
      */
     public FtpServerFactory() {
         serverContext = new DefaultFtpServerContext();
+    }
+
+    public void bind(String host, int port) {
+        this.host = host;
+        this.port = port;
+        ListenerFactory listener = new ListenerFactory();
+        listener.setServerAddress(host);
+        listener.setPort(port);
+        addListener("default", listener.createListener());
     }
 
     /**

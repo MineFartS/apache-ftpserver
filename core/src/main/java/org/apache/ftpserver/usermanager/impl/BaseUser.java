@@ -21,6 +21,7 @@ package org.apache.ftpserver.usermanager.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.ftpserver.ftplet.Authority;
@@ -137,6 +138,10 @@ public class BaseUser implements User {
         } else {
             this.authorities = null;
         }
+    }
+
+    public void setAuthorities(Authority... authorities) {
+        setAuthorities(Arrays.asList(authorities));
     }
 
     /**

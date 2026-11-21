@@ -103,6 +103,9 @@ public class DefaultFtpServer implements FtpServer {
             }
 
         }
+
+        Runtime.getRuntime().addShutdownHook(new Thread(this::stop));
+
     }
 
     /**

@@ -22,10 +22,12 @@ package org.apache.ftpserver;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.ftpserver.usermanager.impl.BaseUser;
 import org.apache.ftpserver.command.CommandFactory;
 import org.apache.ftpserver.ftplet.FileSystemFactory;
 import org.apache.ftpserver.ftplet.Ftplet;
 import org.apache.ftpserver.ftplet.UserManager;
+import org.apache.ftpserver.ftplet.FtpException;
 import org.apache.ftpserver.ftpletcontainer.impl.DefaultFtpletContainer;
 import org.apache.ftpserver.impl.DefaultFtpServer;
 import org.apache.ftpserver.impl.DefaultFtpServerContext;
@@ -60,6 +62,17 @@ public class FtpServerFactory {
         listener.setServerAddress(host);
         listener.setPort(port);
         addListener("default", listener.createListener());
+    }
+
+    @FunctionalInterface
+    public interface UserOp {
+        void run(BaseUser user) throws FtpException;
+    }
+
+    public void addUser(UserOp op) throws FtpException {
+        BaseUser u = new BaseUser();
+        op.run(u);
+        getUserManager().save(u);
     }
 
     /**
